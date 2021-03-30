@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+set -e
+
+source ohmyvocabularyrc
+
+if [[ -e ~/.ohmyvocabularyrc ]]; then
+    source ~/.ohmyvocabularyrc
+fi
+
+function additem {
+    local item="${1:-$(</dev/stdin)}"
+    if [[ -z "${item}" ]]; then
+        echo "Empty item is invalid."
+        return 1
+    fi
+
+    item=$(echo $item | awk '{print tolower($0)}')
+
+    # XXX: Remove new line because apy add_note_single replace newlines to <br/>
+    html=$(mdict -q "${item}" $ECDICT_DB 2>>"${ERRORLOG}"| awk 'NR>2 { print last } {last=$0}' | tr -d '\n')
+    if [[ -z "${html}" ]]; then
+        echo "Failed to lookup ${item} in the target ECDICT dictonary."
+        echo "${item}" >> ${FAILURES_PATH}
+    else
+        apy -b ${BASE} -p ${PROFILE} add-single -d ${DECK} "${item}" "${html}"
+        echo "${item}" >> ${LEARNING_PATH}
+    fi
+}
+
+function syncup {
+    tmp=$(cat ${SINK_PATH} | sort | uniq)
+    if [[ ! -z "${tmp}" ]]; then
+        while IFS= read -r line; do
+            additem "$line"
+        done <<< "$tmp"
+
+        timestamp=$(date +%s)
+        cp ${SINK_PATH} /tmp/backup-sink-${timestamp}.txt
+        apy -b ${BASE} -p ${PROFILE} sync
+        cat /dev/null > ${SINK_PATH}
+    else
+        echo "No new items in sink. Skipping ..."
+    fi
+}
+
+function syncdown {
+    tmp=$(apy -b ${BASE} -p ${PROFILE} list "deck:${DECK} AND is:suspended" | awk '{ print $2 }')
+
+    learned=$(comm -23 <(echo "$tmp"| sort) <(sort $KNOWN_PATH))
+    if [[ ! -z "${learned}" ]]; then
+        echo "Appending new learned to known ..."
+        echo "$learned"
+        echo "$learned" >> $KNOWN_PATH
+    else
+        echo "No new learned update. Skipping ..."
+    fi
+
+    new_learning=$(comm -23 <(sort $LEARNING_PATH) <(echo "$tmp"| sort))
+    echo "Update learning ..."
+    echo "$new_learning" > $LEARNING_PATH
+}
+
+function check {
+    # TODO: ask if pip install -r requirements.txt when mdict-utils or apy is missing
+    echo "Checking dependencies ..."
+    pip_output=$(pip3 list)
+    if ! echo "${pip_output}" | grep "mdict-utils"; then
+        echo "mdict is missing. Please install mdict-utils package or run make install."
+        exit 10
+    fi
+
+    if ! echo "${pip_output}" | grep "apy"; then
+        echo "apy is missing. Please install apy package or run make install."
+        exit 11
+    fi
+    echo "---===[oh-my-vocabulary]===---"
+}
+
+check
+syncup
+syncdown
+
+echo "done!"

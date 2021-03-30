@@ -1,0 +1,12 @@
+BASE=~/.local/share/Anki2
+PROFILE=Test
+DECK="自动收集生词本"
+
+ECDICT_DB=cache/ecdict-concise-enhanced.db
+
+KNOWN_PATH=~/Dropbox/vocabulary/known.txt
+SINK_PATH=~/Dropbox/vocabulary/sink.txt
+FAILURES_PATH=~/Dropbox/vocabulary/failures.txt
+LEARNING_PATH=~/Dropbox/vocabulary/learning.txt
+
+ERRORLOG=/tmp/error-additem.log

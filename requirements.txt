@@ -1,0 +1,7 @@
+anki
+aqt
+PyQtWebEngine
+mdict-utils
+#git+https://github.com/lervag/apy.git@v0.8.0#egg=apy
+git+https://github.com/everbird/apy.git#egg=apy
+html5lib
