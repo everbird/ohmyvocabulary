@@ -29,7 +29,7 @@ function additem {
         echo "Failed to lookup ${item} in the target ECDICT dictonary."
         echo "${item}" >> ${FAILURES_PATH}
     else
-        apy -b ${BASE} -p ${PROFILE} add-single -d ${DECK} "${item}" "${html}"
+        apy -b "${BASE}" -p ${PROFILE} add-single -d ${DECK} "${item}" "${html}"
         echo "${item}" >> ${LEARNING_PATH}
     fi
 }
@@ -43,7 +43,7 @@ function syncup {
 
         timestamp=$(date +%s)
         cp ${SINK_PATH} /tmp/backup-sink-${timestamp}.txt
-        apy -b ${BASE} -p ${PROFILE} sync
+        apy -b "${BASE}" -p ${PROFILE} sync
         cat /dev/null > ${SINK_PATH}
     else
         echo "No new items in sink. Skipping ..."
@@ -51,7 +51,7 @@ function syncup {
 }
 
 function syncdown {
-    tmp=$(apy -b ${BASE} -p ${PROFILE} list "deck:${DECK} AND is:suspended" | awk '{ print $2 }')
+    tmp=$(apy -b "${BASE}" -p ${PROFILE} list "deck:${DECK} AND is:suspended" | awk '{ print $2 }')
 
     learned=$(comm -23 <(echo "$tmp"| sort) <(sort $KNOWN_PATH))
     if [[ ! -z "${learned}" ]]; then
