@@ -2,7 +2,13 @@
 
 set -e
 
-source ohmyvocabularyrc
+if [[ -e /etc/ohmyvocabularyrc ]]; then
+    source /etc/ohmyvocabularyrc
+fi
+
+if [[ -e ohmyvocabularyrc ]]; then
+    source ohmyvocabularyrc
+fi
 
 if [[ -e ~/.ohmyvocabularyrc ]]; then
     source ~/.ohmyvocabularyrc
