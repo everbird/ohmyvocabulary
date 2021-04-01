@@ -89,7 +89,7 @@ cat ~/Dropbox/vocabulary/sink.txt
 # invincible
 ```
 
-Run `omv` (I use pyenv so I wraps the `omv` with virtualenv activate/deactivate as below)
+Run `omv` (I use pyenv so I wrap the `omv` with virtualenv activate/deactivate as below)
 ```bash
 pyenv activate ohmyvocabulary-run; omv; pyenv deactivate
 # Output:
