@@ -40,11 +40,12 @@ For a learned word, you can mark it as "suspended" in **Anki** so that it won't 
 
 ### Prerequisites
 - A Unix-like operating system: macOS, Linux, BSD.
-- `Anki` should be installed (2.1.42 as of March 2021)
-- `GoldenDict` should be installed (1.5.0-RC2 as of March 2021)
+- `Anki` should be installed (compatible with 2.1.42 as of March 2021)
+- `GoldenDict` should be installed (compatible with 1.5.0-RC2 as of March 2021)
 - `git` should be installed
 - `wget` should be installed
 - `pyenv` is optional but recommended
+- `Python >=3.8 ` is required by the [anki](https://pypi.org/project/anki/) package
 
 ### Installation
 
@@ -105,7 +106,7 @@ pyenv activate ohmyvocabulary-run; omv; pyenv deactivate
 # done!
 ```
 
-Check your **Anki** and browse your target deck. The new word is imported with decent paraphrase.
+Check your **Anki** and browse your target deck. The new word should be imported with decent paraphrase.
 
 ![image](https://live.staticflickr.com/65535/51084303298_52027143cf_b.jpg)
 
