@@ -4,7 +4,8 @@ An adapter to import your lookups from GoldenDict to Anki. It also exports your 
 
 ## What problem does it solve?
 
-GoldenDict is a highly customizable dictionary lookup program. Anki is a powerful flashcard program. Both of them are great, but the experience of putting them together is meh :(
+[GoldenDict](http://goldendict.org/) is a customizable dictionary lookup program. [Anki](https://apps.ankiweb.net/) is a powerful flashcard program. Both of them are great, but the experience of putting them together is meh :(
+
 
 As a user of both, I would like to: 
 
@@ -27,7 +28,7 @@ When you look up a word in GoldenDict, it runs a script named `tosink` with `%GD
 
 ### 2) Import new words from above into **Anki**
 
-**ECDICT** is a well-maintained open-source En-Zh dictionary. First, `omv` uses **mdict-utils** to extracts an SQLite database from the mdx file as a cache to speed up the query. Then it queries each word in the `sink.txt`to get the HTML of paraphrases. Finally, `omv` calls **apy** to add a new `Note` to **Anki** for each word. It uses the word as the front and the HTML-format paraphrase as the back.
+[**ECDICT**](https://github.com/skywind3000/ECDICT) is a well-maintained open-source En-Zh dictionary. First, `omv` uses [**mdict-utils**](https://github.com/liuyug/mdict-utils) to extracts an SQLite database from the mdx file as a cache to speed up the query. Then it queries each word in the `sink.txt`to get the HTML of paraphrases. Finally, `omv` calls [**apy**](https://github.com/lervag/apy) to add a new `Note` to **Anki** for each word. It uses the word as the front and the HTML-format paraphrase as the back.
 
 ### 3) Sync **Anki** to AnkiWeb
 `omv` calls `apy sync` to do so. (Credits to **apy**)

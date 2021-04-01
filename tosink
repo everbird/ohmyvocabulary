@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ -e /etc/ohmyvocabularyrc ]]; then
+    source /etc/ohmyvocabularyrc
+fi
+
+if [[ -e ohmyvocabularyrc ]]; then
+    source ohmyvocabularyrc
+fi
+
+if [[ -e ~/.ohmyvocabularyrc ]]; then
+    source ~/.ohmyvocabularyrc
+fi
+
+echo "$@" >> $SINK_PATH
