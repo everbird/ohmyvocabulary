@@ -15,7 +15,7 @@ As a user of both, I would like to:
 4. Maintain a list of my "known" words for further usage.
 5. Sync between devices (mbp, ubuntu@thinkpad, iOS, etc.)
 
-Furthermore, it would great if I can do the above in a program-friendly, automatable way.
+Furthermore, it would be great if I can do the above in a program-friendly, automatable way.
 
 Unfortunately, I didn't find an out-of-box solution to meet my needs yet. So I build it on my own :)
 
