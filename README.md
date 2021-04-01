@@ -80,7 +80,7 @@ Copy & paste the css to the styling of your Card Type.
 
 ### Using Oh My Vocabulary
 
-Run `omv`.
+Close your **Anki** and run `omv`.
 
 > ❯ pyenv activate ohmyvocabulary-run; omv; pyenv deactivate
 > Checking dependencies ...
@@ -92,6 +92,22 @@ Run `omv`.
 > Update learning ...
 > done!
 
+It works but no word in sink.txt yet. Let's lookup a word in **GoldenDict** and try it again.
+
+> ❯ pyenv activate ohmyvocabulary-run; omv; pyenv deactivate
+> Checking dependencies ...
+> mdict-utils       1.0.11
+> apy               0.8.0
+> ---===[oh-my-vocabulary]===---
+> Database was modified.
+> Remember to sync!
+> Syncing deck ... done!
+> Syncing media ... done!
+> No new learned update. Skipping ...
+> Update learning ...
+> done!
+
+Check your **Anki** and browse your target deck. The new word is imported with decent paraphrase.
 
 ## FAQ
 
