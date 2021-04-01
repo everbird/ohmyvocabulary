@@ -1,8 +1,8 @@
 # &#128214; oh-my-vocabulary
 
-A lightweight personal vocabulary management tool taking the advantages of GoldenDict, Anki, and Dropbox.
+An adapter to import your lookups from GoldenDict to Anki. It also exports your learned words to a plain text file managed by Dropbox.
 
-## What problem does it solve? (aka. Motivation)
+## What problem does it solve?
 
 GoldenDict is a highly customizable dictionary lookup program. Anki is a powerful flashcard program. Both of them are great, but the experience of putting them together is meh :(
 
@@ -23,17 +23,17 @@ Unfortunately, I didn't find an out-of-box solution to meet my needs yet. So I b
 
 ### 1) Collect my lookup history from **GoldenDict**
 
-A script named `tosink` is configured in `Dictionaries->Sources->Programs` to be called when lookup a word. The word will be appended in `sink.txt`, which is a plain text file managed in Dropbox.
+When you look up a word in GoldenDict, it runs a script named `tosink` with `%GDWORD%` as this word. `tosink` is configured in `Dictionaries->Sources->Programs` beforehand. It appends this word in `sink.txt`, which is a plain text file managed in Dropbox.
 
 ### 2) Import new words from above into **Anki**
 
-**ECDICT** is a well-maintained open-source En-Zh dictionary. First, `omv` uses **mdict-utils** to extracts an SQLite database from the mdx file as a cache to speed up the query. Then it queries each word in the `sink.txt`to get the HTML of paraphrases. Finally, **apy** is called to add a new `Note` to **Anki** for each word, with the word as the front, and the HTML-format paraphrase as the back.
+**ECDICT** is a well-maintained open-source En-Zh dictionary. First, `omv` uses **mdict-utils** to extracts an SQLite database from the mdx file as a cache to speed up the query. Then it queries each word in the `sink.txt`to get the HTML of paraphrases. Finally, `omv` calls **apy** to add a new `Note` to **Anki** for each word. It uses the word as the front and the HTML-format paraphrase as the back.
 
 ### 3) Sync **Anki** to AnkiWeb
 `omv` calls `apy sync` to do so. (Credits to **apy**)
 
 ### 4) Update the known.txt
-When a word is learned, we manually mark it as "suspended" in **Anki** so that it won't show up in further reviews. `omv` calls `apy list` to get such "learned" words and append them to the known.txt, which is yet another plain text file managed in Dropbox.
+For a learned word, you can mark it as "suspended" in **Anki** so that it won't show up in further reviews. `omv` calls `apy list` to get such words. It appends them to the known.txt, which is yet another plain text file managed in Dropbox.
 
 ## Getting Started 
 
@@ -52,7 +52,7 @@ Configure `tosink` in "Dictionaries->Sources->Programs" **GoldenDict**, such as:
 ```bash
 /home/everbird/bin/tosink "%GDWORD%"
 ```
-As of March 2021, `~` can not be expanded to the user's home yet in **GoldenDict** so please use an absolute path here.
+As of March 2021, `~` can not be expanded to the user's home yet in **GoldenDict**. Please use an absolute path here.
 
 
 #### Run Install
@@ -65,7 +65,7 @@ cd ohmyvocabulary
 make install
 make fetch-and-init-db
 cp ohmyvocabularyrc ~/.ohmyvocabularyrc
-# modify .ohmyvocabularyrc to set your Anki base, profile, deck, and paths for sink.txt known.txt, etc. managed in Dropbox
+# Change .ohmyvocabularyrc to set your Anki base, profile, deck, and paths for *.txt, etc.
 pyenv deactivate  # optional
 ```
 
@@ -75,8 +75,8 @@ To apply the css from **ECDICT**:
 ```shell
 cat cache/concise-enhanced.css
 ```
-Copy & paste the css to the styling of your Card Type.
-(Find the styling editor at `Tools->Manage Note Types->Select default "Basic" and click "Cards..."->Styling`)
+Copy & paste the css to the Styling of your Card Type.
+(Find the Styling editor at `Tools->Manage Note Types->Select default "Basic" and click "Cards..."->Styling`)
 
 ### Using Oh My Vocabulary
 
@@ -101,7 +101,7 @@ It works but no word in sink.txt yet. Let's lookup a word in **GoldenDict** and 
 pyenv activate ohmyvocabulary-run; omv; pyenv deactivate
 # Output:
 # Checking dependencies ...
-# mdict-utils       1.0.11
+#   mdict-utils       1.0.11
 # apy               0.8.0
 # ---===[oh-my-vocabulary]===---
 # Database was modified.
@@ -117,6 +117,6 @@ Check your **Anki** and browse your target deck. The new word is imported with d
 
 ## FAQ
 
-### Question: Why not use `~/.goldendict/history` instead of `sink.txt`?
+### Q: Why not use `~/.goldendict/history` instead of `sink.txt`?
 
-**GoldenDict** doesn't follow symlink to write but overwrite with a new file instead. That makes it difficult to sync via Dropbox.
+**GoldenDict** doesn't follow symlink to write but overwrite with a new file instead. That makes it hard to sync via Dropbox.
