@@ -17,7 +17,7 @@ As a user of both, I would like to:
 
 Furthermore, it would be great if I can do the above in a program-friendly, automatable way.
 
-Unfortunately, I didn't find an out-of-box solution to meet my needs yet. So I build it on my own :)
+Unfortunately, I didn't find an out-of-box solution to meet my needs yet. So I build this on my own :)
 
 
 ## How does it work?
@@ -28,13 +28,13 @@ When you look up a word in GoldenDict, it runs a script named `tosink` with inpu
 
 ### 2) Import new words from above into **Anki**
 
-[**ECDICT**](https://github.com/skywind3000/ECDICT) is a well-maintained open-source En-Zh dictionary. First, `omv` uses [**mdict-utils**](https://github.com/liuyug/mdict-utils) to extracts an SQLite database from the mdx file as a cache to speed up the query. Then it queries each word in the `sink.txt`to get the HTML of paraphrases. Finally, `omv` calls [**apy**](https://github.com/lervag/apy) to add a new `Note` to **Anki** for each word. The `Note` uses the word as the front and the HTML-format paraphrase as the back.
+[**ECDICT**](https://github.com/skywind3000/ECDICT) is a well-maintained open-source En-Zh dictionary. First, We can use [**mdict-utils**](https://github.com/liuyug/mdict-utils) to extracts an SQLite database from the mdx file as a cache to speed up the query. Then `omv` queries each word in the `sink.txt`to get the HTML of paraphrases. Finally, `omv` calls [**apy**](https://github.com/lervag/apy) to add a new `Note` to **Anki** for each word. The `Note` uses the word as the front and the HTML-format paraphrase as the back.
 
 ### 3) Sync **Anki** to AnkiWeb
 `omv` calls `apy sync` to do so. (Credits to **apy**)
 
 ### 4) Update the known.txt
-For a learned word, you can mark it as "suspended" in **Anki** so that it won't show up in further reviews. `omv` calls `apy list` to get such words. It appends these words to the known.txt, which is yet another plain text file managed in Dropbox.
+For a learned word, you can mark it as "suspended" in **Anki** so that it won't show up in further reviews. `omv` calls `apy list` to get all suspended words. Then it appends new suspened words to the `known.txt`.
 
 ## Getting Started 
 
@@ -55,6 +55,12 @@ Configure `tosink` in "Dictionaries->Sources->Programs" **GoldenDict**, such as:
 /home/everbird/bin/tosink "%GDWORD%"
 ```
 So far `~` can not be expanded to the user's home yet in **GoldenDict**. Please use an absolute path here.
+
+You might want create the dictionary to store the `sink.txt`, such as:
+
+``` bash
+mkdir -p ~/Dropbox/vocabulary
+```
 
 
 #### Run Install
